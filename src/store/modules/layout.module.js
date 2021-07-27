@@ -2,7 +2,7 @@ import Layout from '../../data/layout';
 
 const state = {
   layout: Layout,
-  sidebarType: localStorage.getItem('SidebarType') || 'default',
+  sidebarType: localStorage.getItem('SidebarType') || 'default'
 };
 
 // getters
@@ -68,7 +68,7 @@ const mutations = {
   setCustomizeSidebarType: (state, payload) => {
     localStorage.setItem('SidebarType', payload);
     window.location.reload();
-  },
+  }
 };
 
 // actions
@@ -90,7 +90,7 @@ const actions = {
   },
   setCustomizeSidebarType: (context, payload) => {
     context.commit('setCustomizeSidebarType', payload);
-  },
+  }
 };
 
 function addStyle(primary, secondary) {
@@ -100,7 +100,6 @@ function addStyle(primary, secondary) {
 
 function setColor(state, color) {
   addStyle(color.primary, color.secondary);
-  console.log(color.primary, color.secondary);
   localStorage.setItem('primary_color', color.primary);
   localStorage.setItem('secondary_color', color.secondary);
   window.location.reload();
@@ -111,5 +110,5 @@ export default {
   state,
   getters,
   actions,
-  mutations,
+  mutations
 };

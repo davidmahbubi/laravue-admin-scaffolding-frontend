@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Body from '../components/body';
 import SamplePage from '../pages/sample_page';
-import { GET_TOKEN } from './../store/store.types';
+import { GET_TOKEN } from '../store/store.type';
 import { store } from './../store';
 
 // component
@@ -35,7 +35,7 @@ const routes = [
     component: Body,
     children: [
       {
-        path: 'default',
+        path: '',
         name: 'dashboard',
         component: SamplePage,
         meta: {
@@ -83,13 +83,9 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    console.log(store);
     if (!store.getters[`auth/${GET_TOKEN}`]) {
-      next({ name: 'auth' });
+      return next({ name: 'auth' });
     }
-    console.log('requires auth');
-  } else {
-    console.log('not require auth');
   }
   next();
 });

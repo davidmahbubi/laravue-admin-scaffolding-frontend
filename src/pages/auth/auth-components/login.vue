@@ -22,50 +22,78 @@
               <div class="login-main">
                 <b-card>
                   <b-card-text>
-                    <form class="theme-form">
+                    <form class="theme-form" @submit.prevent="login">
                       <h4>Sign in to account</h4>
                       <p>Enter your email & password to login</p>
                       <div class="form-group">
-                        <label class="col-form-label">Email Address</label>
+                        <label for="email-input" class="col-form-label"
+                          >Email Address</label
+                        >
                         <input
                           v-model="email"
+                          id="email-input"
                           class="form-control"
                           type="email"
-                          required=""
                           placeholder="Test@gmail.com"
                           :class="{
-                            'is-invalid': submitted && !email
+                            'is-invalid':
+                              submitted &&
+                              showInvalids &&
+                              invalidMessages.email != ''
                           }"
                         />
                         <div
-                          v-show="submitted && !email"
+                          v-show="
+                            submitted &&
+                              showInvalids &&
+                              invalidMessages.email != ''
+                          "
                           class="invalid-feedback"
                         >
-                          Email is required
+                          {{ invalidMessages.email }}
                         </div>
                       </div>
                       <div class="form-group">
-                        <label class="col-form-label">Password</label>
+                        <label for="label-input" class="col-form-label"
+                          >Password</label
+                        >
                         <input
                           v-model="password"
                           autocomplete=""
+                          id="label-input"
                           class="form-control"
                           :type="type"
-                          name="login[password]"
-                          required=""
                           placeholder="*********"
                           :class="{
-                            'is-invalid': submitted && !email
+                            'is-invalid':
+                              submitted &&
+                              showInvalids &&
+                              invalidMessages.password != ''
                           }"
                         />
                         <div
-                          v-show="submitted && !password"
+                          v-show="
+                            submitted &&
+                              showInvalids &&
+                              invalidMessages.password != ''
+                          "
                           class="invalid-feedback"
                         >
-                          Email is required
+                          {{ invalidMessages.password }}
                         </div>
                         <div class="show-hide" @click="showPassword">
-                          <span class="show"></span>
+                          <!-- <span class="show"> </span> -->
+                          <feather
+                            type="eye"
+                            class="show-pw-icon"
+                            :class="{
+                              'pw-invalid':
+                                submitted &&
+                                showInvalids &&
+                                invalidMessages.password != ''
+                            }"
+                            :size="15"
+                          ></feather>
                         </div>
                       </div>
                       <div class="form-group mb-0">
@@ -75,12 +103,14 @@
                             >Remember password</label
                           >
                         </div>
-                        <button
-                          class="btn btn-primary btn-block"
-                          type="button"
-                          @click="signUp"
-                        >
-                          Login
+                        <button class="btn btn-primary btn-block" type="submit">
+                          <b-spinner
+                            variant="white"
+                            v-show="btnLoading"
+                          ></b-spinner>
+                          <span v-show="!btnLoading">
+                            Login
+                          </span>
                         </button>
                       </div>
                       <p class="mt-4 mb-0">
@@ -103,13 +133,21 @@
 </template>
 
 <script>
+import { LOGIN } from '../../../store/store.type';
+
 export default {
   data: () => ({
     email: '',
     password: '',
     type: 'password',
     passwordRemember: false,
-    submitted: false
+    submitted: false,
+    showInvalids: false,
+    btnLoading: false,
+    invalidMessages: {
+      email: '',
+      password: ''
+    }
   }),
   methods: {
     showPassword: function() {
@@ -119,7 +157,41 @@ export default {
         this.type = 'password';
       }
     },
-    signUp() {}
+    async login() {
+      try {
+        this.btnLoading = true;
+        this.resetInvalids();
+        this.submitted = true;
+        await this.$store.dispatch(`auth/${LOGIN}`, {
+          email: this.email,
+          password: this.password
+        });
+        this.$router.push({ name: 'dashboard' });
+      } catch (err) {
+        switch (err.response.status) {
+          case 401:
+            this.invalidMessages.email = 'Invalid Credentials';
+            this.password = '';
+            this.showInvalids = true;
+            break;
+          case 422:
+            this.invalidMessages.email = err.response.data.errors.email
+              ? err.response.data.errors.email[0]
+              : '';
+            this.invalidMessages.password = err.response.data.errors.password
+              ? err.response.data.errors.password[0]
+              : '';
+            this.showInvalids = true;
+        }
+      } finally {
+        this.btnLoading = false;
+      }
+    },
+    resetInvalids() {
+      this.showInvalids = false;
+      this.invalidMessages.email = '';
+      this.invalidMessages.password = '';
+    }
   }
 };
 // import firebase from 'firebase';
@@ -251,9 +323,19 @@ export default {
 // };
 </script>
 
-<style scoped>
+<style lang="scss">
 .custom-logo {
   max-width: 200px;
-  margin-bottom: 15px;
+}
+
+.show-pw-icon {
+  color: var(--theme-deafult);
+  font-size: 13px;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+.show-pw-icon.pw-invalid {
+  transform: translateX(-10px);
 }
 </style>

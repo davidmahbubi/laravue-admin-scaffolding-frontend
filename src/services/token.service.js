@@ -5,7 +5,7 @@ export const getToken = (key = TOKEN_DEFAULT_KEY) => {
 };
 
 export const setToken = (token, key = TOKEN_DEFAULT_KEY) => {
-  window.localStorage.setItem(token);
+  window.localStorage.setItem(key, token);
 };
 
 export const revokeToken = (key = TOKEN_DEFAULT_KEY) => {

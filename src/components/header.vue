@@ -382,7 +382,9 @@
               >
             </li>
             <li>
-              <a><feather type="log-in"></feather><span>Log out</span></a>
+              <a href="#" @click.prevent="logout">
+                <feather type="log-in"></feather><span>Log out</span>
+              </a>
             </li>
           </ul>
         </li>
@@ -426,6 +428,7 @@
 </template>
 <script>
 var body = document.getElementsByTagName('body')[0];
+import { LOGOUT } from './../store/store.type';
 import { mapState, mapActions } from 'vuex';
 import app from '../main';
 import Bookmark from './bookmark';
@@ -445,19 +448,29 @@ export default {
       openLevelmenu: false,
       openlanguage: false,
       mobile_accordian: false,
-      mixLayout: 'light-only',
+      mixLayout: 'light-only'
     };
   },
   components: {
-    Bookmark,
+    Bookmark
   },
   computed: {
     ...mapState({
       menuItems: state => state.menu.searchData,
-      megamenuItems: state => state.menu.megamenu,
-    }),
+      megamenuItems: state => state.menu.megamenu
+    })
   },
   methods: {
+    async logout() {
+      try {
+        await this.$store.dispatch(`auth/${LOGOUT}`);
+        this.$router.push({
+          name: 'auth'
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    },
     toggle_sidebar() {
       this.$store.dispatch('menu/opensidebar');
     },
@@ -482,7 +495,7 @@ export default {
     search_close() {
       this.searchOpen = false;
     },
-    searchterm: function () {
+    searchterm: function() {
       this.$store.dispatch('menu/searchTerm', this.terms);
     },
     changeLocale(locale) {
@@ -490,15 +503,6 @@ export default {
     },
     mobileaccordian() {
       this.mobile_accordian = !this.mobile_accordian;
-    },
-    logout: function () {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          UserAuth.Logout();
-          this.$router.replace('/auth/login');
-        });
     },
     addFix() {
       body.classList.add('offcanvas');
@@ -536,7 +540,7 @@ export default {
     customizeMixLayout(val) {
       this.mixLayout = val;
       this.$store.dispatch('layout/setLayout', val);
-    },
+    }
   },
   watch: {
     '$i18n.locale'(to, from) {
@@ -544,11 +548,11 @@ export default {
         this.$router.go(this.$route.path);
       }
     },
-    menuItems: function () {
+    menuItems: function() {
       this.terms ? this.addFix() : this.removeFix();
       if (!this.menuItems.length) this.searchResultEmpty = true;
       else this.searchResultEmpty = false;
-    },
-  },
+    }
+  }
 };
 </script>
