@@ -2,35 +2,73 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Body from '../components/body';
 import SamplePage from '../pages/sample_page';
+import { GET_TOKEN } from './../store/store.types';
+import { store } from './../store';
 
 // component
 
 Vue.use(Router);
 
 const routes = [
-  { path: '', redirect: { name: 'default' } },
+  { path: '', redirect: { name: 'dashboard' } },
   {
-    path: '/dashboard',
+    path: '/auth',
+    name: 'auth',
+    redirect: {
+      path: '/auth/login'
+    },
+    component: () =>
+      import(/* webpackChunkName: "Auth" */ '../pages/auth/auth.vue'),
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () =>
+          import(
+            /* webpackChunkName: "LoginComponent" */ '../pages/auth/auth-components/login.vue'
+          )
+      }
+    ]
+  },
+  {
+    path: '/admin',
     component: Body,
     children: [
       {
         path: 'default',
-        name: 'default',
+        name: 'dashboard',
         component: SamplePage,
         meta: {
-          title: 'Default Dashboard | Endless - Premium Admin Template',
-        },
-      },
-      {
-        path: 'ecommerce',
-        name: 'ecommerce',
-        component: SamplePage,
-        meta: {
-          title: 'Ecommerce Dashboard | Endless - Premium Admin Template',
-        },
-      },
-    ],
-  },
+          title: 'Dashboard | Laravue Scaffold App',
+          requiresAuth: true
+        }
+      }
+    ]
+  }
+  // {
+  //   path: '/dashboard',
+  //   component: Body,
+  //   children: [
+  //     {
+  //       path: 'default',
+  //       name: 'default',
+  //       component: SamplePage,
+  //       meta: {
+  //         title: 'Default Dashboard | Endless - Premium Admin Template',
+  //         requiresAuth: true
+  //       }
+  //     },
+  //     {
+  //       path: 'ecommerce',
+  //       name: 'ecommerce',
+  //       component: SamplePage,
+  //       meta: {
+  //         title: 'Ecommerce Dashboard | Endless - Premium Admin Template',
+  //         requiresAuth: true
+  //       }
+  //     }
+  //   ]
+  // }
 ];
 
 const router = new Router({
@@ -40,7 +78,21 @@ const router = new Router({
   linkActiveClass: 'active',
   scrollBehavior() {
     return { x: 0, y: 0 };
-  },
+  }
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    console.log(store);
+    if (!store.getters[`auth/${GET_TOKEN}`]) {
+      next({ name: 'auth' });
+    }
+    console.log('requires auth');
+  } else {
+    console.log('not require auth');
+  }
+  next();
+});
+// router.afterEach(afterEach);
 
 export default router;

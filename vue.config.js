@@ -1,4 +1,4 @@
 module.exports = {
-  baseUrl: '/',
-  publicPath: '/',
+  baseUrl: 'http://localhost:8000',
+  publicPath: '/'
 };
