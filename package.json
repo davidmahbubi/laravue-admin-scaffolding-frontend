@@ -1,5 +1,6 @@
 {
-  "name": "endless-vue",
+  "name": "laravue-admin-scaffold-frontend",
+  "author": "David Mahbubi",
   "version": "0.1.0",
   "private": true,
   "scripts": {
