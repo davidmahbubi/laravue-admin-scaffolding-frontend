@@ -46,7 +46,7 @@
       >
         <feather type="arrow-left"></feather>
       </li>
-      <div id="sidebar-menu">
+      <div id="sidebar-menu" class="mt-3">
         <ul
           class="sidebar-links custom-scrollbar"
           id="myDIV"

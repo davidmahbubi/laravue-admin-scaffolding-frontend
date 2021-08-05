@@ -36,7 +36,6 @@
   </div>
 </template>
 <script>
-import Bookmark from './bookmark';
 export default {
   props: {
     title: {
@@ -45,9 +44,6 @@ export default {
     main: {
       default: '',
     },
-  },
-  components: {
-    Bookmark,
   },
 };
 </script>

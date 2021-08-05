@@ -71,6 +71,7 @@
     "vue2-filters": "^0.7.2",
     "vue2-google-maps": "^0.10.7",
     "vue2-leaflet": "^2.2.1",
+    "vue2-transitions": "^0.3.0",
     "vuedraggable": "^2.23.2",
     "vuejs-datepicker": "^1.6.2",
     "vuejs-smart-table": "0.0.5",

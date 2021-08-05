@@ -23,16 +23,16 @@
           class="sidebar-wrapper"
           :class="[
             { close_icon: !togglesidebar },
-            layout.settings.sidebar_backround
+            layout.settings.sidebar_backround,
           ]"
           :sidebar-layout="layout.settings.sidebar_setting"
         >
           <Sidebar @clicked="sidebar_toggle" />
         </div>
         <div class="page-body">
-          <transition name="fadeIn" enter-active-class="animated fadeIn">
+          <ZoomCenterTransition>
             <router-view class="view"></router-view>
-          </transition>
+          </ZoomCenterTransition>
         </div>
         <Footer />
       </div>
@@ -47,6 +47,7 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Footer from './footer';
 import Customizer from './customizer';
+import { ZoomCenterTransition } from 'vue2-transitions';
 
 export default {
   name: 'mainpage',
@@ -55,7 +56,7 @@ export default {
       mobileheader_toggle_var: false,
       sidebar_toggle_var: false,
       horizontal_Sidebar: true,
-      resized: false
+      resized: false,
     };
   },
   // props:['sidebar_toggle_var'],
@@ -63,14 +64,15 @@ export default {
     Header,
     Sidebar,
     Footer,
-    Customizer
+    Customizer,
+    ZoomCenterTransition,
   },
   computed: {
     ...mapState({
       menuItems: state => state.menu.data,
       layout: state => state.layout.layout,
-      togglesidebar: state => state.menu.togglesidebar
-    })
+      togglesidebar: state => state.menu.togglesidebar,
+    }),
   },
   created() {
     window.addEventListener('resize', this.handleResize);
@@ -95,10 +97,10 @@ export default {
         });
       });
     },
-    sidebar_toggle_var: function() {
+    sidebar_toggle_var: function () {
       this.resized =
         this.width <= 991 ? !this.sidebar_toggle_var : this.sidebar_toggle_var;
-    }
+    },
   },
   methods: {
     sidebar_toggle(value) {
@@ -109,8 +111,8 @@ export default {
     },
     handleResize() {
       this.$store.dispatch('menu/resizetoggle');
-    }
-  }
+    },
+  },
 };
 </script>
 

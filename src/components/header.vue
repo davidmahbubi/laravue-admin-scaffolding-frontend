@@ -1,72 +1,5 @@
 <template>
   <div class="header-wrapper row m-0">
-    <form
-      class="form-inline search-full"
-      action="#"
-      method="get"
-      :class="{ open: searchOpen }"
-    >
-      <div class="form-group w-100">
-        <div class="Typeahead Typeahead--twitterUsers">
-          <div class="u-posRelative">
-            <input
-              class="demo-input Typeahead-input form-control-plaintext w-100"
-              type="text"
-              v-on:keyup="searchterm"
-              v-model="terms"
-              placeholder="Search Cuba .."
-              name="q"
-              title=""
-              autofocus
-            />
-            <div class="spinner-border Typeahead-spinner" role="status">
-              <span class="sr-only">Loading...</span>
-            </div>
-            <feather
-              class="close-search"
-              type="x"
-              @click="search_close()"
-            ></feather>
-          </div>
-          <div
-            :class="searchResult ? 'Typeahead-menu is-open' : 'Typeahead-menu'"
-            v-if="menuItems.length"
-          >
-            <div
-              class="ProfileCard u-cf"
-              v-for="(menuItem, index) in menuItems.slice(0, 8)"
-              :key="index"
-            >
-              <div class="ProfileCard-avatar header-search">
-                <!-- <feather :type="menuItem.icon"></feather> -->
-              </div>
-              <div class="ProfileCard-details">
-                <div class="ProfileCard-realName">
-                  <span @click="removeFix()"
-                    ><router-link
-                      :to="{ path: menuItem.path }"
-                      class="realname"
-                      >{{ menuItem.title }}</router-link
-                    ></span
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            :class="
-              searchResultEmpty ? 'Typeahead-menu is-open' : 'Typeahead-menu'
-            "
-          >
-            <div class="tt-dataset tt-dataset-0">
-              <div class="EmptyMessage">
-                Your search turned up 0 results. Opps There are no result found.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
     <div class="header-logo-wrapper">
       <div class="logo-wrapper">
         <router-link to="/">
@@ -82,27 +15,10 @@
       </div>
     </div>
     <div class="left-header col horizontal-wrapper pl-0">
-      <ul class="horizontal-menu">
-        <li class="mega-menu outside">
-          <a class="nav-link" href="javascript:void(0);">
-            <feather type="layers"></feather><span>Bonus Ui</span>
-          </a>
-        </li>
-        <li class="level-menu outside">
-          <a class="nav-link" href="#">
-            <feather type="inbox"></feather>
-            <span>Level Menu</span></a
-          >
-        </li>
-      </ul>
+      <h5 class="mb-0">Application <span class="text-primary">Name</span></h5>
     </div>
     <div class="nav-right col-8 pull-right right-header p-0">
       <ul class="nav-menus">
-        <li>
-          <span class="header-search"
-            ><feather type="search" @click="search_open()"></feather
-          ></span>
-        </li>
         <li class="onhover-dropdown">
           <div class="notification-box">
             <feather type="bell"></feather
@@ -142,10 +58,6 @@
             </li>
           </ul>
         </li>
-        <li class="onhover-dropdown">
-          <div class="notification-box"><feather type="star"></feather></div>
-          <Bookmark />
-        </li>
         <li>
           <div class="mode">
             <i
@@ -159,185 +71,6 @@
               @click="customizeMixLayout('light-only')"
             ></i>
           </div>
-        </li>
-        <li class="cart-nav onhover-dropdown">
-          <div class="cart-box">
-            <feather type="shopping-cart"></feather>
-            <span class="badge badge-pill badge-primary">2</span>
-          </div>
-          <ul class="cart-dropdown onhover-show-div">
-            <li>
-              <h6 class="mb-0 f-20">Shoping Bag</h6>
-              <feather type="shopping-cart"></feather>
-            </li>
-            <li class="mt-0">
-              <div class="media">
-                <img
-                  class="img-fluid rounded-circle mr-3 img-60"
-                  src="../assets/images/ecommerce/01.jpg"
-                  alt=""
-                />
-                <div class="media-body">
-                  <span>V-Neck Shawl Collar Woman's Solid T-Shirt</span>
-                  <p>Yellow(#fcb102)</p>
-                  <div class="qty-box">
-                    <div class="input-group">
-                      <span class="input-group-prepend">
-                        <button
-                          class="btn quantity-left-minus"
-                          type="button"
-                          data-type="minus"
-                          data-field=""
-                        >
-                          <feather type="minus"></feather>
-                        </button>
-                      </span>
-                      <input
-                        class="form-control input-number"
-                        type="text"
-                        name="quantity"
-                        value="1"
-                      /><span class="input-group-prepend">
-                        <button
-                          class="btn quantity-right-plus"
-                          type="button"
-                          data-type="plus"
-                          data-field=""
-                        >
-                          <feather type="plus"></feather></button
-                      ></span>
-                    </div>
-                  </div>
-                  <h6 class="text-right text-muted">$299.00</h6>
-                </div>
-                <div class="close-circle">
-                  <a href="#"><feather type="x"></feather></a>
-                </div>
-              </div>
-            </li>
-            <li class="mt-0">
-              <div class="media">
-                <img
-                  class="img-fluid rounded-circle mr-3 img-60"
-                  src="../assets/images/ecommerce/03.jpg"
-                  alt=""
-                />
-                <div class="media-body">
-                  <span>V-Neck Shawl Collar Woman's Solid T-Shirt</span>
-                  <p>Yellow(#fcb102)</p>
-                  <div class="qty-box">
-                    <div class="input-group">
-                      <span class="input-group-prepend">
-                        <button
-                          class="btn quantity-left-minus"
-                          type="button"
-                          data-type="minus"
-                          data-field=""
-                        >
-                          <feather type="minus"></feather></button
-                      ></span>
-                      <input
-                        class="form-control input-number"
-                        type="text"
-                        name="quantity"
-                        value="1"
-                      /><span class="input-group-prepend">
-                        <button
-                          class="btn quantity-right-plus"
-                          type="button"
-                          data-type="plus"
-                          data-field=""
-                        >
-                          <feather type="plus"></feather></button
-                      ></span>
-                    </div>
-                  </div>
-                  <h6 class="text-right text-muted">$299.00</h6>
-                </div>
-                <div class="close-circle">
-                  <a href="#"><feather type="x"></feather></a>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="total">
-                <h6 class="mb-2 mt-0 text-muted">
-                  Order Total : <span class="f-right f-20">$598.00</span>
-                </h6>
-              </div>
-            </li>
-            <li>
-              <router-link
-                class="btn btn-block btn-primary view-cart"
-                :to="'/ecommerce/cart'"
-              >
-                Go to shoping bag
-              </router-link>
-              <router-link
-                :to="'/ecommerce/checkout'"
-                class="btn btn-block btn-secondary view-cart"
-              >
-                Checkout
-              </router-link>
-            </li>
-          </ul>
-        </li>
-        <li class="onhover-dropdown">
-          <feather type="message-square"></feather>
-          <ul class="chat-dropdown onhover-show-div">
-            <li>
-              <feather type="message-square"></feather>
-              <h6 class="f-18 mb-0">Message Box</h6>
-            </li>
-            <li>
-              <div class="media">
-                <img
-                  class="img-fluid rounded-circle mr-3"
-                  src="../assets/images/user/1.jpg"
-                  alt=""
-                />
-                <div class="status-circle online"></div>
-                <div class="media-body">
-                  <span>Erica Hughes</span>
-                  <p>Lorem Ipsum is simply dummy...</p>
-                </div>
-                <p class="f-12 font-success">58 mins ago</p>
-              </div>
-            </li>
-            <li>
-              <div class="media">
-                <img
-                  class="img-fluid rounded-circle mr-3"
-                  src="../assets/images/user/2.jpg"
-                  alt=""
-                />
-                <div class="status-circle online"></div>
-                <div class="media-body">
-                  <span>Kori Thomas</span>
-                  <p>Lorem Ipsum is simply dummy...</p>
-                </div>
-                <p class="f-12 font-success">1 hr ago</p>
-              </div>
-            </li>
-            <li>
-              <div class="media">
-                <img
-                  class="img-fluid rounded-circle mr-3"
-                  src="../assets/images/user/4.jpg"
-                  alt=""
-                />
-                <div class="status-circle offline"></div>
-                <div class="media-body">
-                  <span>Ain Chavez</span>
-                  <p>Lorem Ipsum is simply dummy...</p>
-                </div>
-                <p class="f-12 font-danger">32 mins ago</p>
-              </div>
-            </li>
-            <li class="text-center">
-              <a class="btn btn-primary" href="#">View All </a>
-            </li>
-          </ul>
         </li>
         <li class="maximize">
           <a
@@ -356,7 +89,7 @@
               alt=""
             />
             <div class="media-body">
-              <span>Emay Walter</span>
+              <span>{{ userInformations.name || '...' }}</span>
               <p class="mb-0 font-roboto">
                 Admin <i class="middle fa fa-angle-down"></i>
               </p>
@@ -366,19 +99,6 @@
             <li>
               <a href="#"
                 ><feather type="user"></feather><span>Account </span></a
-              >
-            </li>
-            <li>
-              <a href="#"><feather type="mail"></feather><span>Inbox</span></a>
-            </li>
-            <li>
-              <a href="#"
-                ><feather type="file-text"></feather><span>Taskboard</span></a
-              >
-            </li>
-            <li>
-              <a href="#"
-                ><feather type="settings"></feather><span>Settings</span></a
               >
             </li>
             <li>
@@ -429,17 +149,11 @@
 <script>
 var body = document.getElementsByTagName('body')[0];
 import { LOGOUT } from './../store/store.type';
-import { mapState, mapActions } from 'vuex';
-import app from '../main';
-import Bookmark from './bookmark';
+import { mapState } from 'vuex';
 export default {
   name: 'Search',
   data() {
     return {
-      terms: '',
-      searchOpen: false,
-      searchResult: false,
-      searchResultEmpty: false,
       close_sidebar_var: false,
       clicked: false,
       mobile_toggle: false,
@@ -448,24 +162,22 @@ export default {
       openLevelmenu: false,
       openlanguage: false,
       mobile_accordian: false,
-      mixLayout: 'light-only'
+      mixLayout: 'light-only',
     };
-  },
-  components: {
-    Bookmark
   },
   computed: {
     ...mapState({
       menuItems: state => state.menu.searchData,
-      megamenuItems: state => state.menu.megamenu
-    })
+      megamenuItems: state => state.menu.megamenu,
+      userInformations: state => state.auth.user,
+    }),
   },
   methods: {
     async logout() {
       try {
         await this.$store.dispatch(`auth/${LOGOUT}`);
         this.$router.push({
-          name: 'auth'
+          name: 'auth',
         });
       } catch (err) {
         console.error(err);
@@ -495,7 +207,7 @@ export default {
     search_close() {
       this.searchOpen = false;
     },
-    searchterm: function() {
+    searchterm: function () {
       this.$store.dispatch('menu/searchTerm', this.terms);
     },
     changeLocale(locale) {
@@ -540,7 +252,7 @@ export default {
     customizeMixLayout(val) {
       this.mixLayout = val;
       this.$store.dispatch('layout/setLayout', val);
-    }
+    },
   },
   watch: {
     '$i18n.locale'(to, from) {
@@ -548,11 +260,11 @@ export default {
         this.$router.go(this.$route.path);
       }
     },
-    menuItems: function() {
+    menuItems: function () {
       this.terms ? this.addFix() : this.removeFix();
       if (!this.menuItems.length) this.searchResultEmpty = true;
       else this.searchResultEmpty = false;
-    }
-  }
+    },
+  },
 };
 </script>
