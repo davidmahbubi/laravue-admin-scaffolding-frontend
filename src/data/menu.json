@@ -1,6 +1,20 @@
 {
   "data": [
     {
+      "title": "Dashboard",
+      "icon": "home",
+      "path": "/admin",
+      "type": "link",
+      "active": false
+    },
+    {
+      "title": "Profile",
+      "icon": "home",
+      "path": "/admin/profile",
+      "type": "link",
+      "active": false
+    },
+    {
       "title": "StaterKit",
       "icon": "home",
       "type": "sub",
@@ -8,8 +22,12 @@
       "badgeValue": "6",
       "active": false,
       "children": [
-        { "path": "/dashboard/default", "title": "Page1", "type": "link" },
-        { "path": "/dashboard/ecommerce", "title": "Page2", "type": "link" }
+        {
+          "path": "/dashboard/default",
+          "title": "Page1",
+          "type": "link",
+          "active": false
+        }
       ]
     }
   ]

@@ -56,7 +56,7 @@
                   }
                   .sidebar-list {
                     .sidebar-title {
-                      &.active {
+                      &.router-link-exact-active {
                         ~ .sidebar-submenu {
                           display: none !important;
                         }

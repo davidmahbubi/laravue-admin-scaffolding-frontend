@@ -2,9 +2,12 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Body from '../components/body';
 import SamplePage from '../pages/sample_page';
+import ProfilePage from './../pages/Profile.vue';
 import { checkToken } from '../services/token.service';
 
 Vue.use(Router);
+
+const appName = 'Laravue Scaffold App';
 
 const routes = [
   { path: '', redirect: { name: 'dashboard' } },
@@ -36,9 +39,18 @@ const routes = [
         name: 'dashboard',
         component: SamplePage,
         meta: {
-          title: 'Dashboard | Laravue Scaffold App',
+          title: `Dashboard | ${appName}`,
           requiresAuth: true,
         },
+      },
+      {
+        path: 'profile',
+        name: 'admin_profile',
+        meta: {
+          title: `Profile | ${appName}`,
+          requiresAuth: true,
+        },
+        component: ProfilePage,
       },
     ],
   },

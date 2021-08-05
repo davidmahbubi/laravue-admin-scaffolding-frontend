@@ -22,11 +22,12 @@ export default {
       loader: true,
     };
   },
-  async created() {
-    await this.verifyToken();
+  mounted() {
+    this.verifyToken();
   },
   methods: {
     async verifyToken() {
+      console.log(this.$route);
       if (this.$route.meta.requiresAuth) {
         try {
           await this.$store.dispatch(`auth/${VERIFY_TOKEN}`);

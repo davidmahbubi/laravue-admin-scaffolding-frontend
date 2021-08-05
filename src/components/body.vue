@@ -30,9 +30,9 @@
           <Sidebar @clicked="sidebar_toggle" />
         </div>
         <div class="page-body">
-          <ZoomCenterTransition>
+          <SlideYDownTransition mode="out-in" :duration="250">
             <router-view class="view"></router-view>
-          </ZoomCenterTransition>
+          </SlideYDownTransition>
         </div>
         <Footer />
       </div>
@@ -47,7 +47,7 @@ import Header from './header';
 import Sidebar from './sidebar';
 import Footer from './footer';
 import Customizer from './customizer';
-import { ZoomCenterTransition } from 'vue2-transitions';
+import { SlideYDownTransition } from 'vue2-transitions';
 
 export default {
   name: 'mainpage',
@@ -65,7 +65,7 @@ export default {
     Sidebar,
     Footer,
     Customizer,
-    ZoomCenterTransition,
+    SlideYDownTransition,
   },
   computed: {
     ...mapState({

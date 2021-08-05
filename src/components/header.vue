@@ -97,9 +97,9 @@
           </div>
           <ul class="profile-dropdown onhover-show-div">
             <li>
-              <a href="#"
-                ><feather type="user"></feather><span>Account </span></a
-              >
+              <router-link :to="{ name: 'admin_profile' }">
+                <feather type="user"></feather><span>Account </span>
+              </router-link>
             </li>
             <li>
               <a href="#" @click.prevent="logout">
