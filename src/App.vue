@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!-- Loader starts-->
-    <div class="loader-wrapper" :class="{ loderhide: !show }">
+    <div class="loader-wrapper" :class="{ loderhide: !loader }">
       <div class="loader-index">
         <span></span>
       </div>
@@ -14,22 +14,32 @@
 </template>
 
 <script>
+import { VERIFY_TOKEN } from './store/store.type';
+
 export default {
   name: 'app',
   data() {
     return {
-      show: true,
+      loader: true,
     };
   },
-  mounted() {
-    this.timeOut();
+  async created() {
+    await this.verifyToken();
   },
   methods: {
-    timeOut() {
-      var self = this;
-      setTimeout(function () {
-        self.show = false;
-      }, 1000);
+    async verifyToken() {
+      if (this.$route.meta.requiresAuth) {
+        try {
+          await this.$store.dispatch(`auth/${VERIFY_TOKEN}`);
+          this.loader = false;
+        } catch (err) {
+          await this.$router.replace({ name: 'auth' });
+          this.loader = false;
+          console.error(err);
+        }
+      } else {
+        this.loader = false;
+      }
     },
   },
 };

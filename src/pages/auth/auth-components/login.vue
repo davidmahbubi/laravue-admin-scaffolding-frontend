@@ -39,14 +39,14 @@
                             'is-invalid':
                               submitted &&
                               showInvalids &&
-                              invalidMessages.email != ''
+                              invalidMessages.email != '',
                           }"
                         />
                         <div
                           v-show="
                             submitted &&
-                              showInvalids &&
-                              invalidMessages.email != ''
+                            showInvalids &&
+                            invalidMessages.email != ''
                           "
                           class="invalid-feedback"
                         >
@@ -68,14 +68,14 @@
                             'is-invalid':
                               submitted &&
                               showInvalids &&
-                              invalidMessages.password != ''
+                              invalidMessages.password != '',
                           }"
                         />
                         <div
                           v-show="
                             submitted &&
-                              showInvalids &&
-                              invalidMessages.password != ''
+                            showInvalids &&
+                            invalidMessages.password != ''
                           "
                           class="invalid-feedback"
                         >
@@ -90,7 +90,7 @@
                               'pw-invalid':
                                 submitted &&
                                 showInvalids &&
-                                invalidMessages.password != ''
+                                invalidMessages.password != '',
                             }"
                             :size="15"
                           ></feather>
@@ -108,9 +108,7 @@
                             variant="white"
                             v-show="btnLoading"
                           ></b-spinner>
-                          <span v-show="!btnLoading">
-                            Login
-                          </span>
+                          <span v-show="!btnLoading"> Login </span>
                         </button>
                       </div>
                       <p class="mt-4 mb-0">
@@ -146,11 +144,11 @@ export default {
     btnLoading: false,
     invalidMessages: {
       email: '',
-      password: ''
-    }
+      password: '',
+    },
   }),
   methods: {
-    showPassword: function() {
+    showPassword: function () {
       if (this.type === 'password') {
         this.type = 'text';
       } else {
@@ -164,7 +162,7 @@ export default {
         this.submitted = true;
         await this.$store.dispatch(`auth/${LOGIN}`, {
           email: this.email,
-          password: this.password
+          password: this.password,
         });
         this.$router.push({ name: 'dashboard' });
       } catch (err) {
@@ -191,8 +189,8 @@ export default {
       this.showInvalids = false;
       this.invalidMessages.email = '';
       this.invalidMessages.password = '';
-    }
-  }
+    },
+  },
 };
 // import firebase from 'firebase';
 // import Userauth from '../js/index';

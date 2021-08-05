@@ -2,10 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Body from '../components/body';
 import SamplePage from '../pages/sample_page';
-import { GET_TOKEN } from '../store/store.type';
-import { store } from './../store';
-
-// component
+import { checkToken } from '../services/token.service';
 
 Vue.use(Router);
 
@@ -15,7 +12,7 @@ const routes = [
     path: '/auth',
     name: 'auth',
     redirect: {
-      path: '/auth/login'
+      path: '/auth/login',
     },
     component: () =>
       import(/* webpackChunkName: "Auth" */ '../pages/auth/auth.vue'),
@@ -26,9 +23,9 @@ const routes = [
         component: () =>
           import(
             /* webpackChunkName: "LoginComponent" */ '../pages/auth/auth-components/login.vue'
-          )
-      }
-    ]
+          ),
+      },
+    ],
   },
   {
     path: '/admin',
@@ -40,11 +37,11 @@ const routes = [
         component: SamplePage,
         meta: {
           title: 'Dashboard | Laravue Scaffold App',
-          requiresAuth: true
-        }
-      }
-    ]
-  }
+          requiresAuth: true,
+        },
+      },
+    ],
+  },
   // {
   //   path: '/dashboard',
   //   component: Body,
@@ -78,12 +75,15 @@ const router = new Router({
   linkActiveClass: 'active',
   scrollBehavior() {
     return { x: 0, y: 0 };
-  }
+  },
 });
 
 router.beforeEach((to, from, next) => {
+  if ((to.name == 'login' || to.name == 'register') && checkToken()) {
+    next({ name: 'dashboard' });
+  }
   if (to.meta.requiresAuth) {
-    if (!store.getters[`auth/${GET_TOKEN}`]) {
+    if (!checkToken()) {
       return next({ name: 'auth' });
     }
   }

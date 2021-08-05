@@ -1,7 +1,12 @@
 export const GET_TOKEN = 'getToken';
 export const SET_TOKEN = 'setToken';
-export const SET_TOKEN_DETAIL = 'setTokenDetail';
+export const SET_TOKEN_ABILITIES = 'setTokemAbilities';
 export const SET_USER = 'setUser';
 export const PURGE_TOKEN = 'purgeToken';
+export const PURGE_USER = 'purgeUser';
+export const PURGE_TOKEN_ABILITIES = 'purgeTokenAbilities';
 export const LOGIN = 'login';
 export const LOGOUT = 'logout';
+export const VERIFY_TOKEN = 'verifyToken';
+export const SET_VERIFIED = 'setVerified';
+export const GET_VERIFIED = 'getVerified';

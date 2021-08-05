@@ -10,8 +10,8 @@ export const get = (route = '/', query = '') =>
     makeLog('API SERVICE', err, true, true);
     throw err;
   });
-export const post = (route = '/', data = {}) =>
-  Axios.post(`/api${route}`, data).catch(err => {
+export const post = (route = '/', options = {}, data = {}) =>
+  Axios.post(`/api${route}`, data, options).catch(err => {
     makeLog('API SERVICE', err, true, true);
     throw err;
   });

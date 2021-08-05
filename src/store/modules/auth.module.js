@@ -1,50 +1,59 @@
-import { login, logout } from './../../services/apis/auth.service';
+import { login, logout, verify } from './../../services/apis/auth.service';
 import {
   getToken,
   setToken,
-  revokeToken
+  revokeToken,
+  checkToken,
 } from './../../services/token.service';
 import {
   GET_TOKEN,
   SET_TOKEN,
-  SET_TOKEN_DETAIL,
   SET_USER,
   PURGE_TOKEN,
-  PURGE_TOKEN_DETAIL,
+  SET_TOKEN_ABILITIES,
+  PURGE_TOKEN_ABILITIES,
   PURGE_USER,
+  SET_VERIFIED,
+  GET_VERIFIED,
   LOGIN,
-  LOGOUT
+  LOGOUT,
+  VERIFY_TOKEN,
 } from '../store.type';
 
 const state = {
   token: getToken(),
-  tokenDetail: {},
-  user: {}
+  tokenAbilities: [],
+  user: {},
+  verified: false,
 };
 
 const getters = {
-  [GET_TOKEN]: ({ token }) => token
+  [GET_TOKEN]: ({ token }) => token,
+  [GET_VERIFIED]: ({ verified }) => verified,
 };
 
 const mutations = {
   [SET_TOKEN](state, token) {
     state.token = token;
   },
-  [SET_TOKEN_DETAIL](state, tokenDetail) {
-    state.tokenDetail = tokenDetail;
+  [SET_TOKEN_ABILITIES](state, tokenAbilities) {
+    state.tokenAbilities = tokenAbilities;
   },
   [SET_USER](state, user) {
     state.user = user;
   },
+  [SET_VERIFIED](state, verified) {
+    state.verified = verified;
+  },
   [PURGE_TOKEN](state) {
     state.token = null;
   },
-  [PURGE_TOKEN_DETAIL](state) {
-    state.tokenDetail = {};
+  [PURGE_TOKEN_ABILITIES](state) {
+    state.tokenAbilities = [];
   },
   [PURGE_USER](state) {
     state.user = {};
-  }
+  },
 };
 
 const actions = {
@@ -52,10 +61,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(credentials)
         .then(({ data }) => {
-          commit(SET_TOKEN, data.data.token.plainTextToken);
-          commit(SET_TOKEN_DETAIL, data.data.token.accessToken);
-          commit(SET_TOKEN_DETAIL, data.data.user);
-          setToken(data.data.token.plainTextToken);
+          const tokenSplitted = data.data.token.plainTextToken.split('|')[1];
+          commit(SET_TOKEN, tokenSplitted);
+          commit(SET_TOKEN_ABILITIES, data.data.token.accessToken.abilities);
+          commit(SET_USER, data.data.user);
+          commit(SET_VERIFIED, true);
+          setToken(tokenSplitted);
           resolve();
         })
         .catch(reject);
@@ -66,14 +77,39 @@ const actions = {
       logout()
         .then(() => {
           commit(PURGE_TOKEN);
-          commit(PURGE_TOKEN_DETAIL);
+          commit(PURGE_TOKEN_ABILITIES);
           commit(PURGE_USER);
+          commit(SET_VERIFIED, false);
           revokeToken();
           resolve();
         })
         .catch(reject);
     });
-  }
+  },
+  [VERIFY_TOKEN]({ commit }) {
+    return new Promise((resolve, reject) => {
+      if (checkToken()) {
+        verify()
+          .then(({ data }) => {
+            commit(SET_TOKEN, data.data.token);
+            commit(SET_TOKEN_ABILITIES, data.data.tokenAbilities);
+            commit(SET_USER, data.data.user);
+            commit(SET_VERIFIED, true);
+            resolve();
+          })
+          .catch(err => {
+            commit(PURGE_TOKEN);
+            commit(PURGE_TOKEN_ABILITIES);
+            commit(PURGE_USER);
+            commit(SET_VERIFIED, false);
+            revokeToken();
+            reject(err);
+          });
+      } else {
+        reject('Unauthenticated');
+      }
+    });
+  },
 };
 
 export default {
@@ -81,5 +117,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };
